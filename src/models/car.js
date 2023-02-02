@@ -16,7 +16,6 @@ class car extends Sequelize.Model {
         },
         user_id: {
           type: DataTypes.INTEGER,
-          field: "user_id",
           allowNull: false,
           references: {
             model: "users",
@@ -25,7 +24,6 @@ class car extends Sequelize.Model {
         },
         total_price: {
           type: DataTypes.INTEGER,
-          field: "total_price",
           allowNull: false,
         },
       },

@@ -10,9 +10,15 @@ const getAllAvailableProducts = async (req, res) => {
   }
 };
 
-const createProduct = async (req, res) => {
+const createProductWithImage = async (req, res) => {
   try {
+    const { id } = req.params;
     const product = req.body;
+    product.user_id = id;
+    const { available_qty } = product;
+    available_qty > 0
+      ? (product.is_available = true)
+      : (product.is_available = false);
     const result = await ProductServices.create(product);
     res.status(201).json({ message: "product created" });
   } catch (error) {
@@ -23,5 +29,5 @@ const createProduct = async (req, res) => {
 
 module.exports = {
   getAllAvailableProducts,
-  createProduct,
+  createProductWithImage,
 };

@@ -3,11 +3,11 @@ const router = Router();
 
 const {
   getAllAvailableProducts,
-  createProduct,
+  createProductWithImage,
 } = require("../controllers/products.controller");
 
 router.get("/", getAllAvailableProducts);
 
-router.post("/", createProduct);
+router.post("/:id", createProductWithImage);
 
 module.exports = router;

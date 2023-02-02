@@ -1,11 +1,12 @@
+const { Op } = require("sequelize");
 const models = require("../models");
 
 class ProductServices {
   static async getAllAvailableProducts() {
     try {
-      const result = models.product.findAll({
+      const result = models.products.findAll({
         where: {
-          is_available: true,
+          available_qty: { [Op.gt]: 0 },
         },
         include: {
           model: models.users,
@@ -21,7 +22,7 @@ class ProductServices {
 
   static async create(product) {
     try {
-      const result = models.product.create(product);
+      const result = models.products.create(product);
       return result;
     } catch (error) {
       throw error;

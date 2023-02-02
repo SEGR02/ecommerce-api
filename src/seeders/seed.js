@@ -29,12 +29,14 @@ const product = [
     price: 10,
     availableQty: 100,
     userId: 1,
+    // ! must have image
   },
   {
     name: "Jabon",
     price: 3,
     availableQty: 500,
     userId: 2,
+    // ! must have image
   },
 ];
 

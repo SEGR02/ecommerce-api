@@ -7,7 +7,11 @@ require("dotenv").config();
 class AuthServices {
   static async register(user) {
     try {
-      const result = models.users.create(user);
+      const result = await models.users.create(user);
+      const createCar = await models.car.create({
+        user_id: result.id,
+        total_price: 0,
+      });
       return result;
     } catch (error) {
       throw error;

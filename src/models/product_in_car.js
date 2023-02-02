@@ -16,7 +16,6 @@ class product_in_car extends Sequelize.Model {
         },
         car_id: {
           type: DataTypes.INTEGER,
-          field: "car_id",
           allowNull: false,
           references: {
             model: "car",
@@ -25,10 +24,9 @@ class product_in_car extends Sequelize.Model {
         },
         product_id: {
           type: DataTypes.INTEGER,
-          field: "product_id",
           allowNull: false,
           references: {
-            model: "product",
+            model: "products",
             key: "id",
           },
         },
@@ -46,6 +44,13 @@ class product_in_car extends Sequelize.Model {
         },
       },
       {
+        // hooks: {
+        //   beforeUpdate: (productsInCar, options) => {
+        //     const { quantity } = productsInCar;
+        //     const hash = bcrypt.hashSync(password, 10);
+        //     user.password = hash;
+        //   },
+        // },
         sequelize,
         tableName: "product_in_car",
         schema: "public",
