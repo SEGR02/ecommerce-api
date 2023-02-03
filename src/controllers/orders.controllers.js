@@ -1,18 +1,18 @@
 const OrderServices = require("../services/orders.services");
 const transporter = require("../utils/mailer");
 
-const getOrdersById = async (req, res) => {
+const getOrdersById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await OrderServices.getOrdersById(id);
-    res.json(result);
+    if (result) res.json(result);
+    else res.status(400).json({ message: "something wrong" });
   } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
+    next(error);
   }
 };
 
-const createOrderById = async (req, res) => {
+const createOrderById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const data = await OrderServices.getTotalPrice(id);
@@ -37,20 +37,22 @@ const createOrderById = async (req, res) => {
     await OrderServices.cleanCar(id);
     // ? Limpiando car
     await OrderServices.cleanTotalPrice(id);
-    res.status(201).json({ message: "Order created" });
+    if (productInCar) res.status(201).json({ message: "Order created" });
+    else res.status(400).json({ message: "Something wrong" });
   } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
+    next(error);
   }
 };
 
-const orderPaid = async (req, res) => {
+const orderPaid = async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await OrderServices.orderPaid(id);
     const user = await OrderServices.findEmail(id);
     const { email } = user;
-    res.json({ message: "Factura pagada exitosamente verifique su email" });
+    if (result)
+      res.json({ message: "Invoice paid successfully check your email" });
+    else res.status(400).json({ message: "Something wrong" });
     await transporter.sendMail({
       to: email,
       from: "ian.rosas@academlo.com",
@@ -58,8 +60,7 @@ const orderPaid = async (req, res) => {
       html: `<h1>Su orden numero ${id} ha sido pagada exitosamente</h1> <p>Tu paquete ya ha sido enviado</p><p> Solo haz click en el siguiente <a href='#'' target='new_blanc'> enlace para verificar su seguimiento </a>`,
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
+    next(error);
   }
 };
 

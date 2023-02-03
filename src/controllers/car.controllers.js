@@ -1,26 +1,26 @@
 const CarServices = require("../services/car.services");
 
-const addProductToCar = async (req, res) => {
+const addProductToCar = async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = req.body;
     product.car_id = id;
     const result = await CarServices.addProductToCar(product);
-    res.json({ message: "Se ha agregado el producto al carrito" });
+    if (result) res.json({ message: "The product has been added to the cart" });
+    else res.status(400).json({ message: "Something wrong" });
   } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
+    next(error);
   }
 };
 
-const getProductsOfSpecifiedCar = async (req, res) => {
+const getProductsOfSpecifiedCar = async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await CarServices.getSpecifiCar(id);
-    res.json(result);
+    if (result) res.json(result);
+    else res.status(400).json({ message: "something wrong" });
   } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
+    next(error);
   }
 };
 

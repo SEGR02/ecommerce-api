@@ -87,7 +87,7 @@ class OrderServices {
   static async orderPaid(id) {
     try {
       const result = await models.order.update(
-        { is_completed: true },
+        { is_paid: true },
         { where: { id } }
       );
       return result;

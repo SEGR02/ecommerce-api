@@ -1,16 +1,17 @@
 const ProductServices = require("../services/products.services");
 
-const getAllAvailableProducts = async (req, res) => {
+const getAllAvailableProducts = async (req, res, next) => {
   try {
     const result = await ProductServices.getAllAvailableProducts();
-    res.json(result);
+    if (result) {
+      res.json(result);
+    } else res.status(400).json({ message: "Something wrong" });
   } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
+    next(error);
   }
 };
 
-const createProductWithImage = async (req, res) => {
+const createProductWithImage = async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = req.body;
@@ -20,10 +21,11 @@ const createProductWithImage = async (req, res) => {
       ? (product.is_available = true)
       : (product.is_available = false);
     const result = await ProductServices.create(product);
-    res.status(201).json({ message: "product created" });
+    if (result) {
+      res.status(201).json({ message: "product created" });
+    } else res.status(400).json({ message: "Something wrong" });
   } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
+    next(error);
   }
 };
 

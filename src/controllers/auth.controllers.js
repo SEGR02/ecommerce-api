@@ -1,7 +1,7 @@
 const AuthServices = require("../services/auth.services");
 const transporter = require("../utils/mailer");
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   try {
     const user = req.body;
     const result = await AuthServices.register(user);
@@ -11,18 +11,17 @@ const register = async (req, res) => {
         to: result.email,
         from: "ian.rosas@academlo.com",
         subjetc: "Email confirmation",
-        html: "<h1>Bienvenido a la mejor app de chat creada por mi</h1> <p>Tienes que confirmar tu email</p><p> Solo haz click en el siguiente <a href='#'' target='new_blanc'> enlace </a>",
+        html: "<h1>Bienvenido al mejor ecommerceApi creada por mi</h1> <p>Tienes que confirmar tu email</p><p> Solo haz click en el siguiente <a href='#'' target='new_blanc'> enlace </a>",
       });
     } else {
       res.status(400).json({ message: "something wrong" });
     }
   } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
+    next(error);
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     if (!email) {
@@ -48,8 +47,7 @@ const login = async (req, res) => {
       res.status(400).json({ message: "incorrect password" });
     }
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: "something wrong" });
+    next(error);
   }
 };
 

@@ -34,13 +34,8 @@ class product_in_order extends Sequelize.Model {
       allowNull: false
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       allowNull: false
-    },
-    is_payed: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-      defaultValue: false
     }
   }, {
     sequelize,
